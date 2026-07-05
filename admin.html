@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --obs-1: #030304; --obs-2: #0a0a0d; --obs-3: #131317;
+    --obs-1: #01030a; --obs-2: #071431; --obs-3: #0f2c54;
     --glass: rgba(255,255,255,0.05); --glass-strong: rgba(255,255,255,0.09);
     --stroke: rgba(255,255,255,0.12); --stroke-soft: rgba(255,255,255,0.06);
     --ink: #f2f3f6; --ink-dim: rgba(242,243,246,0.56); --ink-faint: rgba(242,243,246,0.34);
@@ -18,9 +18,10 @@
   html, body{
     margin:0; padding:0; min-height:100vh;
     background:
-      radial-gradient(1100px 650px at 12% -8%, rgba(111,198,255,0.09), transparent 60%),
-      radial-gradient(900px 600px at 105% 15%, rgba(240,200,105,0.045), transparent 55%),
-      linear-gradient(165deg, var(--obs-1) 0%, var(--obs-2) 55%, var(--obs-3) 100%);
+      radial-gradient(1300px 550px at 50% 105%, rgba(255,158,96,0.16), transparent 62%),
+      radial-gradient(1100px 650px at 12% -8%, rgba(111,198,255,0.14), transparent 60%),
+      radial-gradient(900px 600px at 105% 15%, rgba(240,200,105,0.05), transparent 55%),
+      linear-gradient(180deg, var(--obs-1) 0%, var(--obs-2) 55%, var(--obs-3) 100%);
     font-family: 'Inter', sans-serif; color: var(--ink);
   }
   .wrap{ position:relative; z-index:1; max-width: 900px; margin: 0 auto; padding: 52px 20px 80px; }
@@ -197,8 +198,13 @@
     { name: "Inter Milan",          color: "#1F63C4" },
     { name: "Barcelona",            color: "#A50044" },
     { name: "Real Madrid",          color: "#F0C869" },
-    { name: "Tottenham",            color: "#B8BCC2" },
+    { name: "Newcastle",            color: "#B8BCC2" },
     { name: "Napoli",               color: "#12A0D7" },
+    { name: "Bayern Munich",        color: "#DC052D" },
+    { name: "Chelsea",              color: "#034694" },
+    { name: "Manchester City",      color: "#6CABDD" },
+    { name: "Juventus",             color: "#000000" },
+    { name: "Borussia Dortmund",    color: "#FDE100" },
   ];
 
   let matches = [];
