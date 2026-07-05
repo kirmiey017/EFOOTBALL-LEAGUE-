@@ -184,8 +184,13 @@
     { name: "Inter Milan",          color: "#1F63C4" },
     { name: "Barcelona",            color: "#A50044" },
     { name: "Real Madrid",          color: "#F0C869" },
-    { name: "Tottenham",            color: "#B8BCC2" },
+    { name: "Newcastle",            color: "#B8BCC2" },
     { name: "Napoli",               color: "#12A0D7" },
+    { name: "Bayern Munich",        color: "#DC052D" },
+    { name: "Chelsea",              color: "#034694" },
+    { name: "Manchester City",      color: "#6CABDD" },
+    { name: "Juventus",             color: "#000000" },
+    { name: "Borussia Dortmund",    color: "#FDE100" },
   ];
 
   let matches = [];
@@ -218,7 +223,7 @@
   function zoneClass(pos){
     if(pos === 1) return "zone-title";
     if(pos <= 3) return "zone-euro";
-    if(pos >= 8) return "zone-relegation";
+    if(pos >= 13) return "zone-relegation";
     return "";
   }
 
