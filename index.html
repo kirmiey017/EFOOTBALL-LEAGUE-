@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Efootball Festival League</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --obs-1: #030304;
+    --obs-2: #0a0a0d;
+    --obs-3: #131317;
+    --glass: rgba(255,255,255,0.05);
+    --glass-strong: rgba(255,255,255,0.09);
+    --stroke: rgba(255,255,255,0.12);
+    --stroke-soft: rgba(255,255,255,0.06);
+    --ink: #f2f3f6;
+    --ink-dim: rgba(242,243,246,0.56);
+    --ink-faint: rgba(242,243,246,0.34);
+    --sky: #6fc6ff;
+    --gold: #f0c869;
+    --rose: #f2657a;
+  }
+  *{ box-sizing: border-box; }
+  html, body{
+    margin:0; padding:0; min-height:100vh;
+    background:
+      radial-gradient(1100px 650px at 12% -8%, rgba(111,198,255,0.09), transparent 60%),
+      radial-gradient(900px 600px at 105% 15%, rgba(240,200,105,0.045), transparent 55%),
+      linear-gradient(165deg, var(--obs-1) 0%, var(--obs-2) 55%, var(--obs-3) 100%);
+    font-family: 'Inter', sans-serif; color: var(--ink);
+  }
+  body::before{
+    content:""; position:fixed; inset:0;
+    background-image: repeating-linear-gradient(90deg, rgba(255,255,255,0.018) 0px, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 140px);
+    pointer-events:none; z-index:0;
+  }
+  .wrap{ position:relative; z-index:1; max-width: 900px; margin: 0 auto; padding: 52px 20px 80px; }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--sky); display:flex; align-items:center; gap:10px; margin-bottom: 14px;
+  }
+  .eyebrow::before{ content:""; width:7px; height:7px; border-radius:50%; background: var(--sky); box-shadow: 0 0 12px 2px rgba(111,198,255,0.7); animation: pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{ opacity:1; } 50%{ opacity:0.3; } }
+  h1{ font-family: 'Oswald', sans-serif; font-weight: 600; font-size: clamp(26px, 5vw, 38px); letter-spacing: 0.01em; margin: 0 0 6px; }
+  h1 span{ color: var(--ink-dim); font-weight: 400; }
+  .sub{ color: var(--ink-faint); font-size: 13.5px; margin: 0 0 28px; line-height:1.5; }
+
+  .panel{
+    position:relative; border-radius: 24px;
+    background: linear-gradient(155deg, var(--glass-strong), var(--glass) 60%);
+    border: 1px solid var(--stroke);
+    backdrop-filter: blur(28px) saturate(180%); -webkit-backdrop-filter: blur(28px) saturate(180%);
+    box-shadow: 0 1.5px 0 rgba(255,255,255,0.16) inset, 0 -1px 0 rgba(255,255,255,0.02) inset, 0 28px 70px -24px rgba(0,0,0,0.75);
+    overflow: hidden; margin-bottom: 22px;
+  }
+  .panel::after{
+    content:""; position:absolute; top:-40%; left:-60%; width: 45%; height:180%;
+    background: linear-gradient(75deg, transparent, rgba(255,255,255,0.10), transparent);
+    transform: rotate(8deg); animation: sheen 2.2s ease-out 0.1s 1; pointer-events:none;
+  }
+  @keyframes sheen{ 0%{ transform: translateX(-40%) rotate(8deg); opacity:0; } 12%{ opacity:1; } 100%{ transform: translateX(260%) rotate(8deg); opacity:0; } }
+
+  .table{ width:100%; border-collapse: collapse; }
+  thead th{
+    text-align:center; font-family:'JetBrains Mono', monospace; font-weight:500; font-size: 10.5px;
+    letter-spacing:0.1em; text-transform:uppercase; color: var(--ink-faint); padding: 16px 8px;
+    border-bottom: 1px solid var(--stroke-soft); white-space:nowrap;
+  }
+  thead th.team{ text-align:left; padding-left:16px; }
+  thead th.pts{ color: var(--sky); }
+  tbody td{ padding: 13px 8px; font-size: 13.5px; text-align:center; border-bottom: 1px solid var(--stroke-soft); }
+  tbody td.team{ text-align:left; padding-left:16px; }
+  tbody tr:last-child td{ border-bottom:none; }
+  tbody tr{ transition: background 0.25s ease; }
+  tbody tr:hover{ background: rgba(255,255,255,0.03); }
+  .pos-cell{ display:flex; align-items:center; gap:9px; justify-content:center; font-family:'JetBrains Mono', monospace; font-weight:600; color: var(--ink-dim); }
+  .zone-bar{ width:3px; height:20px; border-radius:2px; background: transparent; }
+  tr.zone-title .zone-bar{ background: var(--gold); box-shadow: 0 0 8px rgba(240,200,105,0.5); }
+  tr.zone-euro .zone-bar{ background: var(--sky); box-shadow: 0 0 8px rgba(111,198,255,0.45); }
+  tr.zone-relegation .zone-bar{ background: var(--rose); box-shadow: 0 0 8px rgba(242,101,122,0.45); }
+  .club{ display:flex; align-items:center; gap:11px; font-family:'Oswald', sans-serif; font-weight:500; font-size: 14px; letter-spacing:0.01em; }
+  .crest{
+    width: 27px; height:27px; flex-shrink:0; border-radius: 8px; display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono', monospace; font-size: 9.5px; font-weight:700; color: var(--ink);
+    background: rgba(255,255,255,0.06); border: 1.5px solid var(--crest-color, rgba(255,255,255,0.2));
+    box-shadow: 0 0 10px -2px var(--crest-color, transparent);
+  }
+  .pts-val{ font-family:'JetBrains Mono', monospace; font-weight:700; font-size: 14.5px; color: var(--sky); }
+  .stat-val{ font-family:'JetBrains Mono', monospace; font-weight:500; color: var(--ink-dim); }
+  .gd-pos{ color: var(--gold); }
+  .gd-neg{ color: var(--rose); }
+  .legend{ display:flex; flex-wrap:wrap; gap: 18px; padding: 16px 16px 4px; }
+  .legend-item{ display:flex; align-items:center; gap:8px; font-size: 11px; color: var(--ink-faint); font-family:'JetBrains Mono', monospace; }
+  .legend-dot{ width:8px; height:8px; border-radius:2px; }
+  .legend-dot.title{ background: var(--gold); }
+  .legend-dot.euro{ background: var(--sky); }
+  .legend-dot.relegation{ background: var(--rose); }
+  .history{ padding: 4px 16px 18px; }
+  .history-title{ font-family:'JetBrains Mono', monospace; font-size: 10.5px; letter-spacing:0.12em; text-transform:uppercase; color: var(--ink-faint); margin: 14px 0 10px; }
+  .history-row{ display:flex; align-items:center; justify-content:space-between; font-size: 13px; padding: 8px 4px; border-bottom: 1px solid var(--stroke-soft); color: var(--ink-dim); }
+  .history-row:last-child{ border-bottom:none; }
+  .history-score{ font-family:'JetBrains Mono', monospace; font-weight:600; color: var(--ink); }
+  .history-empty{ font-size: 12.5px; color: var(--ink-faint); font-style: italic; padding: 6px 4px; }
+
+  @media (max-width: 680px){
+    .wrap{ padding: 36px 12px 60px; }
+    thead th, tbody td{ padding: 10px 5px; font-size: 12px; }
+    .club{ font-size: 12.5px; gap:8px; }
+    .crest{ width:23px; height:23px; }
+    th.hide-sm, td.hide-sm{ display:none; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .panel::after{ animation: none; }
+    tbody tr{ transition:none; }
+    .eyebrow::before{ animation:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="eyebrow">Live Standings · Season 2025/26</div>
+  <h1>Efootball <span>Festival League</span></h1>
+  <p class="sub">Live standings — updates automatically the moment a new result is logged.</p>
+
+  <div class="panel">
+    <table class="table">
+      <thead>
+        <tr>
+          <th style="width:40px;">Pos</th>
+          <th class="team">Team</th>
+          <th class="hide-sm">P</th>
+          <th>W</th>
+          <th>D</th>
+          <th>L</th>
+          <th class="hide-sm">GF</th>
+          <th class="hide-sm">GA</th>
+          <th>GD</th>
+          <th class="pts">Pts</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+
+    <div class="legend">
+      <div class="legend-item"><span class="legend-dot title"></span> Title</div>
+      <div class="legend-item"><span class="legend-dot euro"></span> Continental spot</div>
+      <div class="legend-item"><span class="legend-dot relegation"></span> Bottom of table</div>
+    </div>
+
+    <div class="history">
+      <div class="history-title">Recent results</div>
+      <div id="history-list"></div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+  import { getFirestore, collection, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyC1RwNxR1cq1snpwA5rWdNWqMcvEJ4WBdo",
+    authDomain: "efootball-festival-league.firebaseapp.com",
+    databaseURL: "https://efootball-festival-league-default-rtdb.firebaseio.com",
+    projectId: "efootball-festival-league",
+    storageBucket: "efootball-festival-league.firebasestorage.app",
+    messagingSenderId: "978943963528",
+    appId: "1:978943963528:web:1b096ef22c9cd83e780a3d"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const matchesRef = collection(db, "matches");
+
+  const teams = [
+    { name: "Arsenal",              color: "#EF0107" },
+    { name: "Manchester United",    color: "#DA020E" },
+    { name: "AC Milan",             color: "#FB090B" },
+    { name: "Paris Saint-Germain",  color: "#3A6ABF" },
+    { name: "Liverpool",            color: "#C8102E" },
+    { name: "Inter Milan",          color: "#1F63C4" },
+    { name: "Barcelona",            color: "#A50044" },
+    { name: "Real Madrid",          color: "#F0C869" },
+    { name: "Newcastle",            color: "#B8BCC2" },
+    { name: "Napoli",               color: "#12A0D7" },
+  ];
+
+  let matches = [];
+  const tbody = document.getElementById("table-body");
+  const historyList = document.getElementById("history-list");
+
+  function initials(name){
+    const skip = new Set(["saint-germain"]);
+    return name.split(/[\s-]+/).filter(w => !skip.has(w.toLowerCase())).map(w => w[0]).join("").slice(0,3).toUpperCase();
+  }
+
+  function computeStandings(){
+    const stats = {};
+    teams.forEach(t => stats[t.name] = { name: t.name, color: t.color, p:0, w:0, d:0, l:0, gf:0, ga:0 });
+    matches.forEach(m => {
+      const home = stats[m.home], away = stats[m.away];
+      if(!home || !away) return;
+      home.p++; away.p++;
+      home.gf += m.homeGoals; home.ga += m.awayGoals;
+      away.gf += m.awayGoals; away.ga += m.homeGoals;
+      if(m.homeGoals > m.awayGoals){ home.w++; away.l++; }
+      else if(m.homeGoals < m.awayGoals){ away.w++; home.l++; }
+      else { home.d++; away.d++; }
+    });
+    const arr = teams.map(t => { const s = stats[t.name]; return { ...s, gd: s.gf - s.ga, pts: s.w * 3 + s.d }; });
+    arr.sort((a,b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf);
+    return arr;
+  }
+
+  function zoneClass(pos){
+    if(pos === 1) return "zone-title";
+    if(pos <= 3) return "zone-euro";
+    if(pos >= 8) return "zone-relegation";
+    return "";
+  }
+
+  function render(){
+    const standings = computeStandings();
+    tbody.innerHTML = standings.map((t, i) => {
+      const pos = i + 1;
+      const gdClass = t.gd > 0 ? "gd-pos" : (t.gd < 0 ? "gd-neg" : "stat-val");
+      const gdText = t.gd > 0 ? `+${t.gd}` : `${t.gd}`;
+      return `
+        <tr class="${zoneClass(pos)}">
+          <td><div class="pos-cell"><span class="zone-bar"></span><span>${pos}</span></div></td>
+          <td class="team"><div class="club"><span class="crest" style="--crest-color:${t.color};">${initials(t.name)}</span><span>${t.name}</span></div></td>
+          <td class="hide-sm stat-val">${t.p}</td>
+          <td class="stat-val">${t.w}</td>
+          <td class="stat-val">${t.d}</td>
+          <td class="stat-val">${t.l}</td>
+          <td class="hide-sm stat-val">${t.gf}</td>
+          <td class="hide-sm stat-val">${t.ga}</td>
+          <td class="${gdClass}">${gdText}</td>
+          <td class="pts-val">${t.pts}</td>
+        </tr>
+      `;
+    }).join("");
+
+    historyList.innerHTML = matches.length
+      ? matches.slice().reverse().slice(0, 6).map(m => `
+          <div class="history-row"><span>${m.home} <span class="history-score">${m.homeGoals} – ${m.awayGoals}</span> ${m.away}</span></div>
+        `).join("")
+      : `<div class="history-empty">No results logged yet.</div>`;
+  }
+
+  onSnapshot(query(matchesRef, orderBy("timestamp", "asc")), (snapshot) => {
+    matches = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+    render();
+  });
+
+  render();
+</script>
+
+</body>
+</html>
