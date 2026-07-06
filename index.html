@@ -131,7 +131,7 @@
         <tr>
           <th style="width:40px;">Pos</th>
           <th class="team">Team</th>
-          <th>P</th>
+          <th class="hide-sm">P</th>
           <th>W</th>
           <th>D</th>
           <th>L</th>
@@ -176,16 +176,12 @@
   const matchesRef = collection(db, "matches");
 
   const teams = [
+    { name: "Real Madrid",          color: "#F0C869" },
+    { name: "Barcelona",            color: "#A50044" },
+    { name: "Paris Saint-Germain",  color: "#3A6ABF" },
     { name: "Arsenal",              color: "#EF0107" },
     { name: "Manchester United",    color: "#DA020E" },
-    { name: "AC Milan",             color: "#FB090B" },
-    { name: "Paris Saint-Germain",  color: "#3A6ABF" },
     { name: "Liverpool",            color: "#C8102E" },
-    { name: "Inter Milan",          color: "#1F63C4" },
-    { name: "Barcelona",            color: "#A50044" },
-    { name: "Real Madrid",          color: "#F0C869" },
-    { name: "Tottenham",             color: "#D6D9DE" },
-    { name: "Napoli",               color: "#12A0D7" },
   ];
 
   let matches = [];
@@ -218,7 +214,7 @@
   function zoneClass(pos){
     if(pos === 1) return "zone-title";
     if(pos <= 3) return "zone-euro";
-    if(pos >= 8) return "zone-relegation";
+    if(pos >= 5) return "zone-relegation";
     return "";
   }
 
@@ -232,7 +228,7 @@
         <tr class="${zoneClass(pos)}">
           <td><div class="pos-cell"><span class="zone-bar"></span><span>${pos}</span></div></td>
           <td class="team"><div class="club"><span class="crest" style="--crest-color:${t.color};">${initials(t.name)}</span><span>${t.name}</span></div></td>
-          <td class="stat-val">${t.p}</td>
+          <td class="hide-sm stat-val">${t.p}</td>
           <td class="stat-val">${t.w}</td>
           <td class="stat-val">${t.d}</td>
           <td class="stat-val">${t.l}</td>
